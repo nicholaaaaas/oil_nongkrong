@@ -1,9 +1,10 @@
 from __future__ import annotations
 from typing import Optional, Tuple
 import pygame
+import utils
 
 FPS = 60
-METAL_PLATE = 'oil_nongkrong/assets/metal_plate.png'
+METAL_PLATE = 'assets/metal_plate.png'
 
 
 class Simulation:
@@ -34,8 +35,7 @@ class Simulation:
         pygame.display.flip()
 
         # sprites
-        self._metal_plate = pygame.image.load(METAL_PLATE).convert_alpha()
-        self._metal_plate = pygame.transform.scale(self._metal_plate, (600, 50))
+        self._metal_plate = utils.convertPNG(METAL_PLATE, (600, 50))
         self.screen.blit(self._metal_plate, (30, 10))
         self.screen.blit(self._metal_plate, (30, 690))
 
