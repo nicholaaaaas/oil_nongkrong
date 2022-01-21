@@ -1,4 +1,8 @@
 import pygame
+import utils
+
+IMAGE_PATH = "assets/oil.png"
+
 
 class Oil:
     mass: float
@@ -8,12 +12,13 @@ class Oil:
 
     def __init__(self, mass, charge, position, velocity) -> None:
         self.mass = mass
-        self.charge= charge
+        self.charge = charge
         self.position = position
         self.velocity = velocity
-    
-    def draw(screen: pygame.surface) -> None:
+        self._image = utils.convertPNG(IMAGE_PATH, (20, 20))
+
+    def draw(self, screen: pygame.Surface) -> None:
         """
         Draws the oil onto the <screen>.
         """
-        pass
+        screen.blit(self._image, (385, self.position))

@@ -1,5 +1,8 @@
 from __future__ import annotations
 from typing import Optional, Tuple
+from oil import Oil
+from plates import Plates
+from experiment import Experiment
 import pygame
 import utils
 
@@ -18,6 +21,9 @@ class Simulation:
 
     _running: bool
     _metal_plate: pygame.Surface
+    _oil_drop: Optional[Oil]
+    _plates: Optional[Plates]
+    _experiment: Optional[Experiment]
 
     def __init__(self) -> None:
         """
@@ -27,6 +33,9 @@ class Simulation:
         self.size = (self.width, self.height)
         self.screen = None
         self._running = True
+        self._oil_drop = None
+        self._plates = None
+        self._experiment = None
 
     def setup(self):
         """ Sets up screen and simulation objects. """
@@ -38,6 +47,12 @@ class Simulation:
         self._metal_plate = utils.convertPNG(METAL_PLATE, (600, 50))
         self.screen.blit(self._metal_plate, (30, 10))
         self.screen.blit(self._metal_plate, (30, 690))
+
+        # TODO : reset the experiment for each trial
+        self._oil_drop = Oil(1.6e-17, 8e-19, 375, 0)
+        self._plates = Plates(0.05)  # start with 0V
+        self._plates.set_pd(10.8)
+        self._experiment = Experiment(self._plates, self._oil_drop)
 
     def run(self) -> None:
         """
@@ -55,7 +70,7 @@ class Simulation:
         """
         Updates object positions and/or properties.
         """
-        pass  # TODO
+        self._experiment.update()
 
     def _events(self) -> None:
         """
@@ -73,7 +88,10 @@ class Simulation:
         Draws the sprite images to the screen.
         """
         # TODO : Implement
-
+        self.screen.fill((190, 180, 164))
+        self.screen.blit(self._metal_plate, (30, 10))
+        self.screen.blit(self._metal_plate, (30, 690))
+        self._oil_drop.draw(self.screen)
         pygame.display.flip()
 
 
