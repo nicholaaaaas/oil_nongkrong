@@ -1,5 +1,6 @@
 import pygame
 
+
 class Oil:
     mass: float
     charge: float
@@ -11,9 +12,10 @@ class Oil:
         self.charge= charge
         self.position = position
         self.velocity = velocity
-    
-    def draw(screen: pygame.surface) -> None:
+
+    def draw(self, screen: pygame.Surface) -> None:
         """
         Draws the oil onto the <screen>.
         """
+        # TODO : resolve the representation scale
         pass
