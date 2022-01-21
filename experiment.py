@@ -57,15 +57,22 @@ class Experiment:
         delta_y = v0 * self._interval + 0.5 * acc * (self._interval ** 2)
         return y0 + delta_y
 
-    def update(self, pd: float, v0: float, y0: float) -> None:
+    def update(self) -> None:
         """ Update the state of this experiment. In particular,
-            recompute the position and velocity of the oil drop according to
-            the new potential difference <pd>, and the previous velocity <v0>
-            and position <y0> of the oil drop.
+            recompute the position and velocity of the oil drop.
+
+            Note: Notice that pygame coordinates increase going
+                down while physical values decrease going down.
+                This function handles all necessary translations.
         """
-        new_acc = self._get_accel(pd)
-        self._oil_drop.velocity = self._get_new_vel(new_acc, v0)
-        self._oil_drop.position = self._get_new_y(new_acc, y0)
+        pd = self._plates.get_pd()
+        actual_acc = self._get_accel(pd)
+        new_acc = -actual_acc  # need to reverse for pygame coordinates
+        self._oil_drop.velocity = self._get_new_vel(new_acc,
+                                                    self._oil_drop.velocity)
+        self._oil_drop.position = self._get_new_y(new_acc,
+                                                  self._oil_drop.velocity,
+                                                  self._oil_drop.position)
 
     def get_plates(self) -> Plates:
         """ Return this experiment's plates. """
@@ -74,4 +81,3 @@ class Experiment:
     def get_oil_drop(self) -> Oil:
         """ Return this experiment's oil drop. """
         return self._oil_drop
-

@@ -6,10 +6,18 @@ class Plates:
     upper_potential: float
     lower_potential: float
 
-    def __init__(self, dist: float, up: float, lp: float) -> None:
+    def __init__(self, dist: float) -> None:
         self.dist = dist
-        self.upper_potential = up
-        self.lower_potential = lp
+        self.upper_potential = -1
+        self.lower_potential = 0
+
+    def set_pd(self, pd) -> None:
+        """ Sets the potentials such that the potential difference
+            between the plates is <pd> with the electric field pointing
+            upwards.
+        """
+        self.upper_potential = -pd
+
 
     def get_pd(self) -> float:
         """
