@@ -4,6 +4,7 @@ import utils
 IMAGE_PATH = "assets/oil.png"
 
 
+
 class Oil:
     mass: float
     charge: float
@@ -16,6 +17,7 @@ class Oil:
         self.position = position
         self.velocity = velocity
         self._image = utils.convertPNG(IMAGE_PATH, (20, 20))
+
 
     def draw(self, screen: pygame.Surface) -> None:
         """

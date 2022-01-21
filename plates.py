@@ -18,6 +18,7 @@ class Plates:
         """
         self.upper_potential = -pd
 
+
     def get_pd(self) -> float:
         """
         Returns the potential differences between the upper and the lower plates
