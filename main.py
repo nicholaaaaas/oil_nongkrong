@@ -4,11 +4,11 @@ from oil import Oil
 from plates import Plates
 from experiment import Experiment
 import pygame
+import pygame_gui
 import utils
 
 FPS = 60
 METAL_PLATE = 'assets/metal_plate.png'
-
 
 class Simulation:
     """
@@ -18,6 +18,10 @@ class Simulation:
     width: int
     height: int
     screen: Optional[pygame.Surface]
+    manager: pygame_gui.UIManager
+    slider: pygame_gui.elements.UIHorizontalSlider
+    clock: pygame.time.Clock
+    _time_delta: float
 
     _running: bool
     _metal_plate: pygame.Surface
@@ -29,19 +33,33 @@ class Simulation:
         """
         Initialize variables for this Game instance
         """
+        # basic inits
         self.width, self.height = 1000, 750
         self.size = (self.width, self.height)
-        self.screen = None
         self._running = True
+        self.screen = pygame.display.set_mode(self.size)
+        
+        # gui inits
+        self.manager = pygame_gui.UIManager(self.size)
+        self.clock = pygame.time.Clock()
+        self.slider = pygame_gui.elements.UIHorizontalSlider(
+            relative_rect=pygame.Rect(670,500,300,20),manager=self.manager,
+            start_value=0, value_range=(0,25000))
+        self.textBox = pygame_gui.elements.UILabel(relative_rect=pygame.Rect(670,520,300,20),
+            text="Volt: 0", manager=self.manager)
+        
+        # experiment object inits
         self._oil_drop = None
         self._plates = None
         self._experiment = None
 
     def setup(self):
         """ Sets up screen and simulation objects. """
-        self.screen = pygame.display.set_mode(self.size)
         self.screen.fill((190, 180, 164))
         pygame.display.flip()
+
+        # setup the slider to have the value 0
+        self.slider.set_current_value(0)
 
         # sprites
         self._metal_plate = utils.convertPNG(METAL_PLATE, (600, 50))
@@ -61,7 +79,7 @@ class Simulation:
         while self._running:
             # pygame.time.wait(1000 // FPS)
             # set background color
-
+            self._time_delta = self.clock.tick(60)/1000.0
             self._events()
             self._update()
             self._draw()
@@ -76,26 +94,33 @@ class Simulation:
         """
         Event handling of the game window
         """
+
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 self._running = False
             elif event.type == pygame.MOUSEBUTTONUP:
-                pos = pygame.mouse.get_pos()
-                print(pos)
+                pass      
+            self.manager.process_events(event)
+        self.textBox.set_text("Volt: {}".format(self.slider.get_current_value()/100))
+        self.manager.update(self._time_delta)
 
     def _draw(self) -> None:
         """
         Draws the sprite images to the screen.
         """
         # TODO : Implement
+        self.manager.draw_ui(self.screen)
+
         self.screen.fill((190, 180, 164))
         self.screen.blit(self._metal_plate, (30, 10))
         self.screen.blit(self._metal_plate, (30, 690))
         self._oil_drop.draw(self.screen)
-        pygame.display.flip()
+
+        pygame.display.update()
 
 
 if __name__ == "__main__":
+    pygame.init()
     simulation = Simulation()
     simulation.setup()
     simulation.run()
@@ -103,3 +128,4 @@ if __name__ == "__main__":
 
 
 
+    
