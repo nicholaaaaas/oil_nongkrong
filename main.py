@@ -34,8 +34,10 @@ class Simulation:
         self.manager = pygame_gui.UIManager(self.size)
         self.clock = pygame.time.Clock()
         self.slider = pygame_gui.elements.UIHorizontalSlider(
-            relative_rect=pygame.Rect(0,0,500,50),manager=self.manager,
-            start_value=0, value_range=(0,100))
+            relative_rect=pygame.Rect(670,500,300,20),manager=self.manager,
+            start_value=0, value_range=(0,25000))
+        self.textBox = pygame_gui.elements.UILabel(relative_rect=pygame.Rect(670,520,300,20),
+            text="Volt: 0", manager=self.manager)
  
 
     def setup(self):
@@ -44,7 +46,7 @@ class Simulation:
         pygame.display.flip()
 
         # setup the slider to have the value 0
-        self.slider.set_current_value = 0
+        self.slider.set_current_value(0)
 
         # sprites
         self._metal_plate = utils.convertPNG(METAL_PLATE, (600, 50))
@@ -78,9 +80,9 @@ class Simulation:
             if event.type == pygame.QUIT:
                 self._running = False
             elif event.type == pygame.MOUSEBUTTONUP:
-                pos = pygame.mouse.get_pos()
-                print(pos)
+                pass      
             self.manager.process_events(event)
+        self.textBox.set_text("Volt: {}".format(self.slider.get_current_value()/100))
         self.manager.update(self._time_delta)
 
     def _draw(self) -> None:
@@ -90,7 +92,7 @@ class Simulation:
         # TODO : Implement
         self.manager.draw_ui(self.screen)
 
-        pygame.display.flip()
+        pygame.display.update()
 
 
 if __name__ == "__main__":
