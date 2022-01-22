@@ -1,10 +1,8 @@
 from __future__ import annotations
-
 from typing import Callable, List, Optional, Tuple, Union
 
 import pygame
 import pygame_gui
-
 import utils
 
 EQ_PATH = "assets/pyjac_equations.png"
@@ -22,6 +20,9 @@ class UI:
     _acceleration_label: pygame_gui.elements.UILabel
     _distance_label: pygame_gui.elements.UILabel
     _pd_label: pygame_gui.elements.UILabel
+
+    _mass_list: pygame_gui.elements.UIDropDownMenu
+
     _charge_calc: pygame_gui.elements.UILabel
 
     _equations: Optional[pygame.Surface]
@@ -48,7 +49,6 @@ class UI:
         self._distance_label = pygame_gui.elements.UILabel(
             relative_rect=pygame.Rect(670, 580, 300, 20),
             text=f"Plate separation (m): {dist}", manager=self._manager)
-
         self._pd_label = pygame_gui.elements.UILabel(
             relative_rect=pygame.Rect(670, 600, 300, 20),
             text="Potential Difference (V): 0", manager=self._manager)
@@ -56,6 +56,10 @@ class UI:
         self._new_btn = pygame_gui.elements.UIButton(
             relative_rect=pygame.Rect(770, 670, 100, 50),
             text="Reset", manager=self._manager)
+
+        self._mass_list = pygame_gui.elements.UIDropDownMenu(relative_rect=pygame.Rect(
+            720, 350, 200, 20), starting_option="1.6e-17", manager=self._manager, 
+            options_list=["8.0e-17", "6.4e-17", "4.8e-17", "3.2e-17", "1.6e-17"])
 
         # calculations
         self._equations = None
@@ -120,7 +124,8 @@ class UI:
             Note: this method fails silently if the <value> will cause
                 slider to exceed its range.
          """
-        self._slider.set_current_value(self._slider.get_current_value() + value)
+        self._slider.set_current_value(
+            self._slider.get_current_value() + value)
 
     def read_slider(self) -> int:
         """ Reads the value from the slider. """
@@ -132,3 +137,8 @@ class UI:
         screen.blit(self._equations, (670, 80))
         for i, inst in enumerate(self._instructions):
             screen.blit(inst, (670, 10 + i * 20))
+
+    def get_selected_mass(self)-> float:
+        """ Return the mass selected. """
+        return float(self._mass_list.selected_option)
+        
