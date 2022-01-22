@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import Callable, Optional, Tuple
+from typing import Callable, List, Optional, Tuple, Union
 
 import pygame
 import pygame_gui
@@ -25,12 +25,13 @@ class UI:
     _charge_calc: pygame_gui.elements.UILabel
 
     _equations: Optional[pygame.Surface]
+    _instructions: List[Union[pygame.Surface, pygame.SurfaceType]]
 
     def __init__(self, size: Tuple[int, int], dist: float) -> None:
         """ Initialize the UI with screen size <size>
             and plate separation <dist>.
         """
-        self._manager = pygame_gui.UIManager(size, 'theme.json')
+        self._manager = pygame_gui.UIManager(size)
         self._slider = pygame_gui.elements.UIHorizontalSlider(
             relative_rect=pygame.Rect(670, 620, 300, 20), manager=self._manager,
             start_value=0, value_range=(0, 25000))
@@ -59,11 +60,21 @@ class UI:
         # calculations
         self._equations = None
         self._charge_calc = pygame_gui.elements.UILabel(
-            relative_rect=pygame.Rect(670, 360, 300, 20),
+            relative_rect=pygame.Rect(670, 380, 300, 20),
             text="Charge (C): --", manager=self._manager)
         self._calc_btn = pygame_gui.elements.UIButton(
-            relative_rect=pygame.Rect(775, 400, 100, 50),
+            relative_rect=pygame.Rect(775, 420, 100, 50),
             text="Calculate", manager=self._manager)
+
+        # instructions
+        font = pygame.font.SysFont("timesnewroman", 20)
+        instructions = ["1. Choose a mass and adjust the potential"
+                        " difference until acceleration is 0",
+                        "2. Once you have the right potential difference,",
+                        "    hit calculate to find the corresponding charge."]
+        white = (0, 0, 0)
+        self._instructions = [font.render(inst, True, white) for inst in
+                              instructions]
 
     def ui_setup(self, slider_initial: float) -> None:
         """ Handles all the UI setup.
@@ -118,4 +129,6 @@ class UI:
     def draw_ui(self, screen: pygame.Surface) -> None:
         """ Draw the UI to the screen. """
         self._manager.draw_ui(screen)
-        screen.blit(self._equations, (670, 60))
+        screen.blit(self._equations, (670, 80))
+        for i, inst in enumerate(self._instructions):
+            screen.blit(inst, (670, 10 + i * 20))
