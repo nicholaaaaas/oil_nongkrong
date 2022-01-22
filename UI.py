@@ -79,9 +79,17 @@ class UI:
 
         self._manager.process_events(event)
 
-    def get_slider(self) -> pygame_gui.elements.UIHorizontalSlider:
-        """ Return a reference to the slider. """
-        return self._slider
+    def update_slider(self, value: int) -> None:
+        """ Increments the slider by <value>.
+
+            Note: this method fails silently if the <value> will cause
+                slider to exceed its range.
+         """
+        self._slider.set_current_value(self._slider.get_current_value() + value)
+
+    def read_slider(self) -> int:
+        """ Reads the value from the slider. """
+        return self._slider.get_current_value()
 
     def draw_ui(self, screen: pygame.Surface) -> None:
         """ Draw the UI to the screen ."""
