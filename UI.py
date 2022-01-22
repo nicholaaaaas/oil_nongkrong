@@ -30,39 +30,39 @@ class UI:
         """ Initialize the UI with screen size <size>
             and plate separation <dist>.
         """
-        self._manager = pygame_gui.UIManager(size)
+        self._manager = pygame_gui.UIManager(size, 'theme.json')
         self._slider = pygame_gui.elements.UIHorizontalSlider(
-            relative_rect=pygame.Rect(670, 570, 300, 20), manager=self._manager,
+            relative_rect=pygame.Rect(670, 620, 300, 20), manager=self._manager,
             start_value=0, value_range=(0, 25000))
 
         self._mass_label = pygame_gui.elements.UILabel(
-            relative_rect=pygame.Rect(670, 470, 300, 20),
+            relative_rect=pygame.Rect(670, 520, 300, 20),
             text="Mass (kg): 0", manager=self._manager)
         self._velocity_label = pygame_gui.elements.UILabel(
-            relative_rect=pygame.Rect(670, 490, 300, 20),
+            relative_rect=pygame.Rect(670, 540, 300, 20),
             text="Velocity (m/s): 0", manager=self._manager)
         self._acceleration_label = pygame_gui.elements.UILabel(
-            relative_rect=pygame.Rect(670, 510, 300, 20),
+            relative_rect=pygame.Rect(670, 560, 300, 20),
             text="Acceleration (m/s^2): 0", manager=self._manager)
         self._distance_label = pygame_gui.elements.UILabel(
-            relative_rect=pygame.Rect(670, 530, 300, 20),
+            relative_rect=pygame.Rect(670, 580, 300, 20),
             text=f"Plate separation (m): {dist}", manager=self._manager)
 
         self._pd_label = pygame_gui.elements.UILabel(
-            relative_rect=pygame.Rect(670, 550, 300, 20),
+            relative_rect=pygame.Rect(670, 600, 300, 20),
             text="Potential Difference (V): 0", manager=self._manager)
 
         self._new_btn = pygame_gui.elements.UIButton(
-            relative_rect=pygame.Rect(770, 620, 100, 50),
+            relative_rect=pygame.Rect(770, 670, 100, 50),
             text="Reset", manager=self._manager)
 
         # calculations
         self._equations = None
         self._charge_calc = pygame_gui.elements.UILabel(
-            relative_rect=pygame.Rect(670, 310, 300, 20),
+            relative_rect=pygame.Rect(670, 360, 300, 20),
             text="Charge (C): --", manager=self._manager)
         self._calc_btn = pygame_gui.elements.UIButton(
-            relative_rect=pygame.Rect(775, 350, 100, 50),
+            relative_rect=pygame.Rect(775, 400, 100, 50),
             text="Calculate", manager=self._manager)
 
     def ui_setup(self, slider_initial: float) -> None:
@@ -118,4 +118,4 @@ class UI:
     def draw_ui(self, screen: pygame.Surface) -> None:
         """ Draw the UI to the screen. """
         self._manager.draw_ui(screen)
-        screen.blit(self._equations, (670, 10))
+        screen.blit(self._equations, (670, 60))
