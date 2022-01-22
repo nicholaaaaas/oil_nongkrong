@@ -1,5 +1,6 @@
-import physics_equations
 from typing import Tuple
+
+import physics_equations
 
 
 class Plates:
