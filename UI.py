@@ -65,7 +65,6 @@ class UI:
         """ Handles all the UI updates. """
         if self._new_btn.check_pressed():
             reset_callback()
-            # self.ui_setup(0)
 
         self._pd_label.set_text(
             "Potential Difference (V): "
