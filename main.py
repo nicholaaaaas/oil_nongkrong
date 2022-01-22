@@ -1,12 +1,14 @@
 from __future__ import annotations
 
 from typing import Optional, Tuple
+
+import pygame
+
+import utils
+from UI import UI
+from experiment import Experiment
 from oil import Oil
 from plates import Plates
-from experiment import Experiment
-from UI import UI
-import pygame
-import utils
 
 FPS = 60
 METAL_PLATE = 'assets/metal_plate.png'

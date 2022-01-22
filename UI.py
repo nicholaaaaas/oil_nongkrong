@@ -1,5 +1,6 @@
 from __future__ import annotations
-from typing import Tuple, Callable
+
+from typing import Callable, Tuple
 
 import pygame
 import pygame_gui

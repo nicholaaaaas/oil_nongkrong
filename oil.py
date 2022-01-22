@@ -1,8 +1,8 @@
 import pygame
+
 import utils
 
 IMAGE_PATH = "assets/oil.png"
-
 
 
 class Oil:
@@ -17,7 +17,6 @@ class Oil:
         self.position = position
         self.velocity = velocity
         self._image = utils.convertPNG(IMAGE_PATH, (30, 30))
-
 
     def draw(self, screen: pygame.Surface) -> None:
         """
