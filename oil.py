@@ -16,11 +16,11 @@ class Oil:
         self.charge = charge
         self.position = position
         self.velocity = velocity
-        self._image = utils.convertPNG(IMAGE_PATH, (20, 20))
+        self._image = utils.convertPNG(IMAGE_PATH, (30, 30))
 
 
     def draw(self, screen: pygame.Surface) -> None:
         """
         Draws the oil onto the <screen>.
         """
-        screen.blit(self._image, (385, self.position))
+        screen.blit(self._image, (320, self.position))

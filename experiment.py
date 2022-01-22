@@ -69,16 +69,24 @@ class Experiment:
         self._interval = time_delta  # time passed since the last frame
         actual_acc = self.get_accel()
         new_acc = -actual_acc  # need to reverse for pygame coordinates
-        
+
         # scale to convert: velocity is in ms-1 while position is in pixels
         # scaling: 6.5 pixels = 1 m
-        self._oil_drop.position = self._get_new_y(new_acc,
-                                                  - self._oil_drop.velocity * 6.5,
-                                                  self._oil_drop.position)
-        self._oil_drop.velocity = self._get_new_vel(actual_acc,
-                                                    self._oil_drop.velocity)
 
-
+        new_y = self._get_new_y(new_acc,
+                                - self._oil_drop.velocity * 6.5,
+                                self._oil_drop.position)
+        if(55 < new_y < 665):
+            self._oil_drop.position = new_y
+            self._oil_drop.velocity = self._get_new_vel(actual_acc,
+                                                        self._oil_drop.velocity)
+        else:
+            if(new_y>665):
+                self._oil_drop.position = 665
+            else:
+                self._oil_drop.position = 55
+            self._oil_drop.velocity = 0
+    
     def get_plates(self) -> Plates:
         """ Return this experiment's plates. """
         return self._plates

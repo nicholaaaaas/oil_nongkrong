@@ -44,7 +44,7 @@ class Simulation:
         self.clock = pygame.time.Clock()
 
         # experiment objects
-        self._oil_drop = Oil(1.6e-17, 8e-19, 375, 0)
+        self._oil_drop = Oil(1.6e-17, 8e-19, 320, 0)
         self._plates = Plates(0.05)  # start with 0V
         self._plates.set_pd(0)
         self._experiment = Experiment(self._plates, self._oil_drop)
