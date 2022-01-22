@@ -27,8 +27,9 @@ class Experiment:
         self._oil_drop = oil_drop
         self._interval = 1 / 60
 
-    def _get_accel(self, pd: float) -> float:
+    def get_accel(self) -> float:
         """ Calculates the acceleration of the oil_drop. """
+        pd = self._plates.get_pd()
         e_strength = phy.electric_field_strength(pd, self._plates.dist)
 
         e_force = phy.electric_force(e_strength, self._oil_drop.charge)
@@ -66,15 +67,14 @@ class Experiment:
                 This function handles all necessary translations.
         """
         self._interval = time_delta  # time passed since the last frame
-        pd = self._plates.get_pd()
-        actual_acc = self._get_accel(pd)
+        actual_acc = self.get_accel()
         new_acc = -actual_acc  # need to reverse for pygame coordinates
         self._oil_drop.position = self._get_new_y(new_acc,
                                                   self._oil_drop.velocity * 6.5,
                                                   self._oil_drop.position)
         self._oil_drop.velocity = self._get_new_vel(new_acc,
                                                     self._oil_drop.velocity)
-        
+
 
     def get_plates(self) -> Plates:
         """ Return this experiment's plates. """

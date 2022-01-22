@@ -22,11 +22,12 @@ class Plates:
             Note: the range of accepted values is determined by the pd_range
                 specified during initialization.
         """
-        if pd >= self.pd_range[0] and pd <= self.pd_range[1]:
+        if self.pd_range[0] <= pd <= self.pd_range[1]:
             self.upper_potential = -pd
 
     def get_pd(self) -> float:
-        """ Returns the potential differences between the upper and the lower plates.
+        """ Returns the potential differences between the upper
+            and the lower plates.
         """
         return physics_equations.potential_diff(self.upper_potential,
                                                 self.lower_potential)
