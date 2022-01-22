@@ -1,7 +1,10 @@
 from __future__ import annotations
 
-from typing import Optional, Tuple
-
+from typing import Dict, List, Optional, Tuple
+from oil import Oil
+from plates import Plates
+from experiment import Experiment
+from UI import UI
 import pygame
 
 import utils
@@ -32,6 +35,7 @@ class Simulation:
     _plates: Optional[Plates]
     _experiment: Optional[Experiment]
     _frame_count: int
+    _mass_list: Dict(float, float)
 
     def __init__(self) -> None:
         """
@@ -50,7 +54,8 @@ class Simulation:
         self._plates = Plates(0.05)  # start with 0V
         self._plates.set_pd(0)
         self._experiment = Experiment(self._plates, self._oil_drop)
-
+        self._mass_list = {8.0e-17: 1.6e-19, 6.4e-17: 3.2e-19,
+                           4.8e-17: 4.999e-19, 3.2e-17: 6.4e-19, 1.6e-17: 8e-19}
         self._ui = UI(self.size, self._plates.dist)
 
     def setup(self):
@@ -66,7 +71,9 @@ class Simulation:
         self.screen.blit(self._metal_plate, (30, 710))
 
         # reset experiment objects
-        self._oil_drop = Oil(1.6e-17, 8e-19, 375, 0)
+        oil_mass = self._ui.get_selected_mass()
+        print(oil_mass, self._mass_list[oil_mass])
+        self._oil_drop = Oil(oil_mass, self._mass_list[oil_mass], 375, 0)
         self._plates = Plates(0.05)  # start with 0V
         self._plates.set_pd(0)
         self._experiment = Experiment(self._plates, self._oil_drop)

@@ -1,6 +1,6 @@
 from __future__ import annotations
-
-from typing import Callable, Tuple
+import re
+from typing import Tuple, Callable
 
 import pygame
 import pygame_gui
@@ -18,6 +18,7 @@ class UI:
     _acceleration_label: pygame_gui.elements.UILabel
     _distance_label: pygame_gui.elements.UILabel
     _pd_label: pygame_gui.elements.UILabel
+    _mass_list: pygame_gui.elements.UIDropDownMenu
 
     def __init__(self, size: Tuple[int, int], dist: float) -> None:
         """ Initialize the UI with screen size <size>
@@ -40,7 +41,6 @@ class UI:
         self._distance_label = pygame_gui.elements.UILabel(
             relative_rect=pygame.Rect(670, 530, 300, 20),
             text=f"Plate separation (m): {dist}", manager=self._manager)
-
         self._pd_label = pygame_gui.elements.UILabel(
             relative_rect=pygame.Rect(670, 550, 300, 20),
             text="Potential Difference (V): 0", manager=self._manager)
@@ -48,6 +48,10 @@ class UI:
         self._new_btn = pygame_gui.elements.UIButton(
             relative_rect=pygame.Rect(770, 620, 100, 50),
             text="Reset", manager=self._manager)
+
+        self._mass_list = pygame_gui.elements.UIDropDownMenu(relative_rect=pygame.Rect(
+            720, 350, 200, 20), starting_option="1.6e-17", manager=self._manager, 
+            options_list=["8.0e-17", "6.4e-17", "4.8e-17", "3.2e-17", "1.6e-17"])
 
     def ui_setup(self, slider_initial: float) -> None:
         """ Handles all the UI setup.
@@ -86,7 +90,8 @@ class UI:
             Note: this method fails silently if the <value> will cause
                 slider to exceed its range.
          """
-        self._slider.set_current_value(self._slider.get_current_value() + value)
+        self._slider.set_current_value(
+            self._slider.get_current_value() + value)
 
     def read_slider(self) -> int:
         """ Reads the value from the slider. """
@@ -95,3 +100,6 @@ class UI:
     def draw_ui(self, screen: pygame.Surface) -> None:
         """ Draw the UI to the screen ."""
         self._manager.draw_ui(screen)
+
+    def get_selected_mass(self)-> float:
+        return float(self._mass_list.selected_option)
