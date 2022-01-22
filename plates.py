@@ -8,7 +8,8 @@ class Plates:
     lower_potential: float
     pd_range: Tuple[float, float]
 
-    def __init__(self, dist: float, pd_range: Tuple[float, float] = (0, 250)) -> None:
+    def __init__(self, dist: float,
+                 pd_range: Tuple[float, float] = (0, 250)) -> None:
         self.dist = dist
         self.upper_potential = -1
         self.lower_potential = 0
