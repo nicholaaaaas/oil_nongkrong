@@ -7,6 +7,7 @@ from experiment import Experiment
 from UI import UI
 import pygame
 
+import physics_equations as phy
 import utils
 from UI import UI
 from experiment import Experiment
@@ -98,7 +99,7 @@ class Simulation:
         """
         self._plates.set_pd(self._ui.read_slider() / 100)
         self._experiment.update(self._time_delta)
-        self._ui.ui_update(self._time_delta, self.setup,
+        self._ui.ui_update(self._time_delta, self.setup, self._calc_corresponding_charge,
                            self._oil_drop.mass, self._oil_drop.velocity,
                            self._experiment.get_accel())
 
@@ -136,6 +137,16 @@ class Simulation:
 
         self._ui.draw_ui(self.screen)
         pygame.display.update()
+
+    def _calc_corresponding_charge(self) -> float:
+        """ Return the corresponding charge given the current voltage
+            set, assuming the acceleration is 0.
+
+            This used to simulate an actual calculation where the exact
+            acceleration at a given time is not known.
+        """
+        return phy.charge_oil(self._oil_drop.mass, 0, self._plates.dist,
+                              self._plates.get_pd())
 
 
 if __name__ == "__main__":
