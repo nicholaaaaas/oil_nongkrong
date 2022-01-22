@@ -37,25 +37,27 @@ class Simulation:
         """
         Initialize variables for this Game instance
         """
-        # basic inits
+        # basic init
         self.width, self.height = 1300, 750
         self.size = (self.width, self.height)
         self._running = True
         self._frame_count = 0
         self.screen = pygame.display.set_mode(self.size)
 
-        # gui inits
+        # gui init
         self.manager = pygame_gui.UIManager(self.size)
         self.clock = pygame.time.Clock()
         self.slider = pygame_gui.elements.UIHorizontalSlider(
             relative_rect=pygame.Rect(670, 550, 300, 20), manager=self.manager,
             start_value=0, value_range=(0, 25000))
-        self.textBox = pygame_gui.elements.UILabel(relative_rect=pygame.Rect(670, 570, 300, 20),
-                                                   text="Volt (V): 0", manager=self.manager)
-        self.new_btn = pygame_gui.elements.UIButton(relative_rect=pygame.Rect(770, 620, 100, 50),
-                                                   text="New", manager=self.manager)
+        self.textBox = pygame_gui.elements.UILabel(
+            relative_rect=pygame.Rect(670, 570, 300, 20),
+            text="Volt (V): 0", manager=self.manager)
+        self.new_btn = pygame_gui.elements.UIButton(
+            relative_rect=pygame.Rect(770, 620, 100, 50),
+            text="New", manager=self.manager)
 
-        # experiment object inits
+        # experiment object init
         self._oil_drop = None
         self._plates = None
         self._experiment = None
@@ -63,7 +65,7 @@ class Simulation:
     def setup(self):
         """ Sets up screen and simulation objects. """
         self._frame_count = 0
-        
+
         self.screen.fill((190, 180, 164))
         pygame.display.flip()
 
@@ -79,14 +81,14 @@ class Simulation:
         # setup the slider to have the value 1080
         self.slider.set_current_value(self._plates.get_pd() * 100)
         self._experiment = Experiment(self._plates, self._oil_drop)
-        
+
     def run(self) -> None:
         """
         Run the Game until it ends or player quits.
         """
         while self._running:
             # set background color
-            self._time_delta = self.clock.tick(60)/1000.0
+            self._time_delta = self.clock.tick(60) / 1000.0
             self._events()
             self._update()
             self._draw()
@@ -95,12 +97,12 @@ class Simulation:
         """
         Updates object positions and/or properties.
         """
-        self._plates.set_pd(self.slider.get_current_value()/100)
+        self._plates.set_pd(self.slider.get_current_value() / 100)
         self.textBox.set_text(f"Volt (V): {self._plates.get_pd()}")
         self.manager.update(self._time_delta)
         self._experiment.update(self._time_delta)
-        
-        if(self.new_btn.check_pressed()):
+
+        if self.new_btn.check_pressed():
             self.setup()
 
     def _events(self) -> None:
@@ -117,12 +119,15 @@ class Simulation:
         if self._frame_count == 0:
             # get arrow input
             keys = pygame.key.get_pressed()
-            # 1 if right(+) direction, 0 if no press or both pressed, -1 if left(-) direction
+            # 1 if right(+) direction,
+            # 0 if no press or both pressed,
+            # -1 if left(-) direction
             direction = keys[pygame.K_RIGHT] - keys[pygame.K_LEFT]
-            self.slider.set_current_value(self.slider.get_current_value() + direction)
+            self.slider.set_current_value(self.slider.get_current_value()
+                                          + direction)
             self._frame_count = 9
         else:
-            self._frame_count -= 1  
+            self._frame_count -= 1
 
     def _draw(self) -> None:
         """
