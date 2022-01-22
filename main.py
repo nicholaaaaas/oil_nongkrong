@@ -51,7 +51,7 @@ class Simulation:
             relative_rect=pygame.Rect(670, 550, 300, 20), manager=self.manager,
             start_value=0, value_range=(0, 25000))
         self.textBox = pygame_gui.elements.UILabel(relative_rect=pygame.Rect(670, 570, 300, 20),
-                                                   text="Volt(V): 0", manager=self.manager)
+                                                   text="Volt (V): 0", manager=self.manager)
         self.new_btn = pygame_gui.elements.UIButton(relative_rect=pygame.Rect(770, 620, 100, 50),
                                                    text="New", manager=self.manager)
 
@@ -96,7 +96,7 @@ class Simulation:
         Updates object positions and/or properties.
         """
         self._plates.set_pd(self.slider.get_current_value()/100)
-        self.textBox.set_text(f"Volt(V): {self._plates.get_pd()}")
+        self.textBox.set_text(f"Volt (V): {self._plates.get_pd()}")
         self.manager.update(self._time_delta)
         self._experiment.update(self._time_delta)
         

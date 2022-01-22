@@ -57,7 +57,7 @@ class Experiment:
         delta_y = v0 * self._interval + 0.5 * acc * (self._interval ** 2)
         return y0 + delta_y
 
-    def update(self) -> None:
+    def update(self, time_delta: float) -> None:
         """ Update the state of this experiment. In particular,
             recompute the position and velocity of the oil drop.
 
@@ -65,14 +65,16 @@ class Experiment:
                 down while physical values decrease going down.
                 This function handles all necessary translations.
         """
+        self._interval = time_delta  # time passed since the last frame
         pd = self._plates.get_pd()
         actual_acc = self._get_accel(pd)
         new_acc = -actual_acc  # need to reverse for pygame coordinates
+        self._oil_drop.position = self._get_new_y(new_acc,
+                                                  self._oil_drop.velocity * 6.5,
+                                                  self._oil_drop.position)
         self._oil_drop.velocity = self._get_new_vel(new_acc,
                                                     self._oil_drop.velocity)
-        self._oil_drop.position = self._get_new_y(new_acc,
-                                                  self._oil_drop.velocity,
-                                                  self._oil_drop.position)
+        
 
     def get_plates(self) -> Plates:
         """ Return this experiment's plates. """
