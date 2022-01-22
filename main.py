@@ -6,7 +6,6 @@ from plates import Plates
 from experiment import Experiment
 from UI import UI
 import pygame
-import pygame_gui
 import utils
 
 FPS = 60
@@ -44,10 +43,13 @@ class Simulation:
         self.screen = pygame.display.set_mode(self.size)
         self.clock = pygame.time.Clock()
 
-        self._ui = UI(self.size)
-        self._oil_drop = None
-        self._plates = None
-        self._experiment = None
+        # experiment objects
+        self._oil_drop = Oil(1.6e-17, 8e-19, 375, 0)
+        self._plates = Plates(0.05)  # start with 0V
+        self._plates.set_pd(0)
+        self._experiment = Experiment(self._plates, self._oil_drop)
+
+        self._ui = UI(self.size, self._plates.dist)
 
     def setup(self):
         """ Sets up screen and simulation objects. """
@@ -61,7 +63,7 @@ class Simulation:
         self.screen.blit(self._metal_plate, (30, 10))
         self.screen.blit(self._metal_plate, (30, 710))
 
-        # experiment objects
+        # reset experiment objects
         self._oil_drop = Oil(1.6e-17, 8e-19, 375, 0)
         self._plates = Plates(0.05)  # start with 0V
         self._plates.set_pd(0)
@@ -87,8 +89,9 @@ class Simulation:
         """
         self._plates.set_pd(self._ui.get_slider().get_current_value() / 100)
         self._experiment.update(self._time_delta)
-        self._ui.ui_update(self._time_delta, self.setup, self._oil_drop.mass,
-                           self._oil_drop.velocity, self._experiment.get_accel())
+        self._ui.ui_update(self._time_delta, self.setup,
+                           self._oil_drop.mass, self._oil_drop.velocity,
+                           self._experiment.get_accel())
 
     def _events(self) -> None:
         """
@@ -110,7 +113,7 @@ class Simulation:
             direction = keys[pygame.K_RIGHT] - keys[pygame.K_LEFT]
             self._ui.get_slider().set_current_value(
                 self._ui.get_slider().get_current_value() + direction)
-            self._frame_count = 9
+            self._frame_count = 3
         else:
             self._frame_count -= 1
 
