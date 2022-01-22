@@ -1,9 +1,13 @@
 from __future__ import annotations
 
-from typing import Callable, Tuple
+from typing import Callable, Optional, Tuple
 
 import pygame
 import pygame_gui
+
+import utils
+
+EQ_PATH = "assets/pyjac_equations.png"
 
 
 class UI:
@@ -18,6 +22,9 @@ class UI:
     _acceleration_label: pygame_gui.elements.UILabel
     _distance_label: pygame_gui.elements.UILabel
     _pd_label: pygame_gui.elements.UILabel
+    _charge_calc: pygame_gui.elements.UILabel
+
+    _equations: Optional[pygame.Surface]
 
     def __init__(self, size: Tuple[int, int], dist: float) -> None:
         """ Initialize the UI with screen size <size>
@@ -49,19 +56,35 @@ class UI:
             relative_rect=pygame.Rect(770, 620, 100, 50),
             text="Reset", manager=self._manager)
 
+        # calculations
+        self._equations = None
+        self._charge_calc = pygame_gui.elements.UILabel(
+            relative_rect=pygame.Rect(670, 310, 300, 20),
+            text="Charge (C): --", manager=self._manager)
+        self._calc_btn = pygame_gui.elements.UIButton(
+            relative_rect=pygame.Rect(775, 350, 100, 50),
+            text="Calculate", manager=self._manager)
+
     def ui_setup(self, slider_initial: float) -> None:
         """ Handles all the UI setup.
 
             slider_initial: the initial value for the p.d. slider
         """
         self._slider.set_current_value(slider_initial)
+        self._equations = utils.convertPNG(EQ_PATH, (300, 300))
 
     def ui_update(self, time_delta: float, reset_callback: Callable,
+                  calculate_callback: Callable,
                   mass: float, velocity: float, acc: float) -> None:
         """ Handles all the UI updates. """
         if self._new_btn.check_pressed():
             reset_callback()
             self.ui_setup(0)
+
+        if self._calc_btn.check_pressed():
+            corresponding_charge = calculate_callback()
+            self._charge_calc.set_text("Charge (C): "
+                                       f"{corresponding_charge:.2e}")
 
         self._pd_label.set_text(
             "Potential Difference (V): "
@@ -93,5 +116,6 @@ class UI:
         return self._slider.get_current_value()
 
     def draw_ui(self, screen: pygame.Surface) -> None:
-        """ Draw the UI to the screen ."""
+        """ Draw the UI to the screen. """
         self._manager.draw_ui(screen)
+        screen.blit(self._equations, (670, 10))
