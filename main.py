@@ -42,27 +42,9 @@ class Simulation:
         self._running = True
         self._frame_count = 0
         self.screen = pygame.display.set_mode(self.size)
-<<<<<<< HEAD
         self.clock = pygame.time.Clock()
 
         self._ui = UI(self.size)
-=======
-
-        # gui init
-        self.manager = pygame_gui.UIManager(self.size)
-        self.clock = pygame.time.Clock()
-        self.slider = pygame_gui.elements.UIHorizontalSlider(
-            relative_rect=pygame.Rect(670, 550, 300, 20), manager=self.manager,
-            start_value=0, value_range=(0, 25000))
-        self.textBox = pygame_gui.elements.UILabel(
-            relative_rect=pygame.Rect(670, 570, 300, 20),
-            text="Volt (V): 0", manager=self.manager)
-        self.new_btn = pygame_gui.elements.UIButton(
-            relative_rect=pygame.Rect(770, 620, 100, 50),
-            text="New", manager=self.manager)
-
-        # experiment object init
->>>>>>> main
         self._oil_drop = None
         self._plates = None
         self._experiment = None
@@ -85,12 +67,9 @@ class Simulation:
         self._plates.set_pd(0)
         self._experiment = Experiment(self._plates, self._oil_drop)
 
-<<<<<<< HEAD
         # UI
         self._ui.ui_setup(self._plates.get_pd() * 100)
 
-=======
->>>>>>> main
     def run(self) -> None:
         """
         Run the Game until it ends or player quits.
@@ -106,19 +85,10 @@ class Simulation:
         """
         Updates object positions and/or properties.
         """
-<<<<<<< HEAD
         self._plates.set_pd(self._ui.get_slider().get_current_value() / 100)
         self._experiment.update(self._time_delta)
-        self._ui.ui_update(self._time_delta)
-=======
-        self._plates.set_pd(self.slider.get_current_value() / 100)
-        self.textBox.set_text(f"Volt (V): {self._plates.get_pd()}")
-        self.manager.update(self._time_delta)
-        self._experiment.update(self._time_delta)
-
-        if self.new_btn.check_pressed():
-            self.setup()
->>>>>>> main
+        self._ui.ui_update(self._time_delta, self.setup, self._oil_drop.mass,
+                           self._oil_drop.velocity, self._experiment.get_accel())
 
     def _events(self) -> None:
         """
@@ -138,13 +108,8 @@ class Simulation:
             # 0 if no press or both pressed,
             # -1 if left(-) direction
             direction = keys[pygame.K_RIGHT] - keys[pygame.K_LEFT]
-<<<<<<< HEAD
             self._ui.get_slider().set_current_value(
                 self._ui.get_slider().get_current_value() + direction)
-=======
-            self.slider.set_current_value(self.slider.get_current_value()
-                                          + direction)
->>>>>>> main
             self._frame_count = 9
         else:
             self._frame_count -= 1
