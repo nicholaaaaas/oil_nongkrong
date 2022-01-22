@@ -87,7 +87,7 @@ class Simulation:
         """
         Updates object positions and/or properties.
         """
-        self._plates.set_pd(self._ui.get_slider().get_current_value() / 100)
+        self._plates.set_pd(self._ui.read_slider() / 100)
         self._experiment.update(self._time_delta)
         self._ui.ui_update(self._time_delta, self.setup,
                            self._oil_drop.mass, self._oil_drop.velocity,
@@ -111,9 +111,8 @@ class Simulation:
             # 0 if no press or both pressed,
             # -1 if left(-) direction
             direction = keys[pygame.K_RIGHT] - keys[pygame.K_LEFT]
-            self._ui.get_slider().set_current_value(
-                self._ui.get_slider().get_current_value() + direction)
-            self._frame_count = 3
+            self._ui.update_slider(direction)
+            self._frame_count = 5
         else:
             self._frame_count -= 1
 
