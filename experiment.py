@@ -76,12 +76,12 @@ class Experiment:
         new_y = self._get_new_y(new_acc,
                                 - self._oil_drop.velocity * 6.5,
                                 self._oil_drop.position)
-        if (55 < new_y < 665):
+        if 55 < new_y < 665:
             self._oil_drop.position = new_y
             self._oil_drop.velocity = self._get_new_vel(actual_acc,
                                                         self._oil_drop.velocity)
         else:
-            if (new_y > 665):
+            if new_y > 665:
                 self._oil_drop.position = 665
             else:
                 self._oil_drop.position = 55

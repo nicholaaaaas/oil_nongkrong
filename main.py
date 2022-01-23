@@ -1,11 +1,7 @@
 from __future__ import annotations
-from tkinter import NE
 
-from typing import Dict, List, Optional, Tuple
-from oil import Oil
-from plates import Plates
-from experiment import Experiment
-from UI import UI
+from typing import Dict, Optional, Tuple
+
 import pygame
 
 import physics_equations as phy
@@ -18,7 +14,7 @@ from plates import Plates
 FPS = 60
 METAL_PLATE = 'assets/metal_plate.png'
 POS = 'assets/pos.png'
-NEG = 'assets/neg.png' 
+NEG = 'assets/neg.png'
 
 
 class Simulation:
@@ -62,7 +58,8 @@ class Simulation:
         self._plates.set_pd(0)
         self._experiment = Experiment(self._plates, self._oil_drop)
         self._mass_dict = {8.0e-17: (1.6e-19, 247), 6.4e-17: (3.2e-19, 91),
-                           4.8e-17: (4.799e-19, 55), 3.2e-17: (6.4e-19, 30), 1.6e-17: (8e-19, 6)}
+                           4.8e-17: (4.799e-19, 55), 3.2e-17: (6.4e-19, 30),
+                           1.6e-17: (8e-19, 6)}
         self._ui = UI(self.size, self._plates.dist)
 
     def setup(self):
@@ -104,7 +101,8 @@ class Simulation:
         """
         self._plates.set_pd(self._ui.read_slider() / 100)
         self._experiment.update(self._time_delta)
-        self._ui.ui_update(self._time_delta, self.setup, self._calc_corresponding_charge,
+        self._ui.ui_update(self._time_delta, self.setup,
+                           self._calc_corresponding_charge,
                            self._oil_drop.mass, self._oil_drop.velocity,
                            self._experiment.get_accel())
 

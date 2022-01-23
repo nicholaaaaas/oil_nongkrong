@@ -1,8 +1,10 @@
 from __future__ import annotations
+
 from typing import Callable, List, Optional, Tuple, Union
 
 import pygame
 import pygame_gui
+
 import utils
 
 EQ_PATH = "assets/pyjac_equations.png"
@@ -57,9 +59,12 @@ class UI:
             relative_rect=pygame.Rect(770, 670, 100, 50),
             text="Reset", manager=self._manager)
 
-        self._mass_list = pygame_gui.elements.UIDropDownMenu(relative_rect=pygame.Rect(
-            970, 520, 200, 20), starting_option="1.6e-17", manager=self._manager, 
-            options_list=["8.0e-17", "6.4e-17", "4.8e-17", "3.2e-17", "1.6e-17"])
+        self._mass_list = pygame_gui.elements.UIDropDownMenu(
+            relative_rect=pygame.Rect(
+                970, 520, 200, 20), starting_option="1.6e-17",
+            manager=self._manager,
+            options_list=["8.0e-17", "6.4e-17", "4.8e-17", "3.2e-17",
+                          "1.6e-17"])
 
         # calculations
         self._equations = None
@@ -137,7 +142,6 @@ class UI:
         for i, inst in enumerate(self._instructions):
             screen.blit(inst, (670, 10 + i * 20))
 
-    def get_selected_mass(self)-> float:
+    def get_selected_mass(self) -> float:
         """ Return the mass selected. """
         return float(self._mass_list.selected_option)
-        
