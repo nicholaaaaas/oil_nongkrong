@@ -36,7 +36,7 @@ class Simulation:
     _plates: Optional[Plates]
     _experiment: Optional[Experiment]
     _frame_count: int
-    _mass_list: Dict(float, float)
+    _mass_dict: Dict[float, Tuple[float, float]]
 
     def __init__(self) -> None:
         """
@@ -55,8 +55,8 @@ class Simulation:
         self._plates = Plates(0.05)  # start with 0V
         self._plates.set_pd(0)
         self._experiment = Experiment(self._plates, self._oil_drop)
-        self._mass_list = {8.0e-17: 1.6e-19, 6.4e-17: 3.2e-19,
-                           4.8e-17: 4.999e-19, 3.2e-17: 6.4e-19, 1.6e-17: 8e-19}
+        self._mass_dict = {8.0e-17: (1.6e-19, 247), 6.4e-17: (3.2e-19, 91),
+                           4.8e-17: (4.799e-19, 55), 3.2e-17: (6.4e-19, 30), 1.6e-17: (8e-19, 6)}
         self._ui = UI(self.size, self._plates.dist)
 
     def setup(self):
@@ -73,10 +73,9 @@ class Simulation:
 
         # reset experiment objects
         oil_mass = self._ui.get_selected_mass()
-        print(oil_mass, self._mass_list[oil_mass])
-        self._oil_drop = Oil(oil_mass, self._mass_list[oil_mass], 375, 0)
+        self._oil_drop = Oil(oil_mass, self._mass_dict[oil_mass][0], 375, 0)
         self._plates = Plates(0.05)  # start with 0V
-        self._plates.set_pd(0)
+        self._plates.set_pd(self._mass_dict[oil_mass][1])
         self._experiment = Experiment(self._plates, self._oil_drop)
 
         # UI
@@ -125,6 +124,9 @@ class Simulation:
             self._frame_count = 5
         else:
             self._frame_count -= 1
+        
+        if self._ui.get_selected_mass() != self._oil_drop.mass:
+            self.setup()
 
     def _draw(self) -> None:
         """
