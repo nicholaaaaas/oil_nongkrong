@@ -21,7 +21,7 @@ The application simulates a simplified setup for the oil drop experiment, much l
 After each trial, the user can choose to take measurements and the application will make the necessary calculations to determine the charge on the oil drop.
 
 ## Trying out
-When trying the application, we recommend using Python 3.8 (3.9 also seems to be working fine). Also, make sure to have `scipy`, `pygame`, and `pygame_gui` installed before running the application. 
+When trying the application, we recommend using Python 3.8 (3.9 also seems to be working fine). Also, make sure to have `scipy`, `pygame`, and `pygame_gui` installed before running the application. The application entry point is `main.py`.
 
 ## Team Members
 - Christabel Faylinn
