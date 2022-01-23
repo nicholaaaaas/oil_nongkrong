@@ -16,9 +16,12 @@ The experiment should be repeated a few times with different masses of oil. Usin
 - [YouTube](https://www.youtube.com/watch?v=2HhaQtvICe8) video explaining how the experiment works.
 
 ## The Application
-The application simulates a simplified setup for the oil drop experiment, much like the basic setup described above. The user can vary the potential difference between the plate to adjust the strength of the electric field and electric force. In addition, the distance between the plates can also be changed prior to each trial.
+The application simulates a simplified setup for the oil drop experiment, much like the basic setup described above. The user can vary the potential difference between the plate to adjust the strength of the electric field and electric force. 
 
-After each trial, the user can choose to take measurements. The application will make the necessary calculations and store the relevant data for each trial.
+After each trial, the user can choose to take measurements and the application will make the necessary calculations to determine the charge on the oil drop.
+
+## Trying out
+When trying the application, we recommend using Python 3.8 (3.9 also seems to be working fine). Also, make sure to have `scipy`, `pygame`, and `pygame_gui` installed before running the application. 
 
 ## Team Members
 - Christabel Faylinn
