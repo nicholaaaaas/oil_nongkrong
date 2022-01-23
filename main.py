@@ -1,4 +1,5 @@
 from __future__ import annotations
+from tkinter import NE
 
 from typing import Dict, List, Optional, Tuple
 from oil import Oil
@@ -16,6 +17,8 @@ from plates import Plates
 
 FPS = 60
 METAL_PLATE = 'assets/metal_plate.png'
+POS = 'assets/pos.png'
+NEG = 'assets/neg.png' 
 
 
 class Simulation:
@@ -32,6 +35,8 @@ class Simulation:
     _time_delta: float
     _running: bool
     _metal_plate: pygame.Surface
+    _pos_sign: pygame.Surface
+    _neg_sign: pygame.Surface
     _oil_drop: Optional[Oil]
     _plates: Optional[Plates]
     _experiment: Optional[Experiment]
@@ -69,8 +74,8 @@ class Simulation:
 
         # sprites
         self._metal_plate = utils.convertPNG(METAL_PLATE, (600, 50))
-        self.screen.blit(self._metal_plate, (30, 10))
-        self.screen.blit(self._metal_plate, (30, 710))
+        self._neg_sign = utils.convertPNG(NEG, (20, 20))
+        self._pos_sign = utils.convertPNG(POS, (20, 20))
 
         # reset experiment objects
         oil_mass = self._ui.get_selected_mass()
@@ -136,6 +141,8 @@ class Simulation:
         self.screen.fill((190, 180, 164))
         self.screen.blit(self._metal_plate, (30, 10))
         self.screen.blit(self._metal_plate, (30, 690))
+        self.screen.blit(self._neg_sign, (50, 25))
+        self.screen.blit(self._pos_sign, (50, 705))
         self._oil_drop.draw(self.screen)
 
         self._ui.draw_ui(self.screen)
