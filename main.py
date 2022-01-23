@@ -49,6 +49,7 @@ class Simulation:
         self._frame_count = 0
         self.screen = pygame.display.set_mode(self.size)
         self.clock = pygame.time.Clock()
+        pygame.display.set_caption("Oil Nongkrong -- Millikan's Oil Experiment")
 
         # experiment objects
         self._oil_drop = Oil(1.6e-17, 8e-19, 320, 0)
@@ -124,7 +125,7 @@ class Simulation:
             self._frame_count = 5
         else:
             self._frame_count -= 1
-        
+
         if self._ui.get_selected_mass() != self._oil_drop.mass:
             self.setup()
 
