@@ -36,7 +36,7 @@ class Simulation:
     _plates: Optional[Plates]
     _experiment: Optional[Experiment]
     _frame_count: int
-    _mass_dict: Dict(float, tuple)
+    _mass_dict: Dict[float, Tuple[float, float]]
 
     def __init__(self) -> None:
         """

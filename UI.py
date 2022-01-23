@@ -58,7 +58,7 @@ class UI:
             text="Reset", manager=self._manager)
 
         self._mass_list = pygame_gui.elements.UIDropDownMenu(relative_rect=pygame.Rect(
-            720, 350, 200, 20), starting_option="1.6e-17", manager=self._manager, 
+            970, 520, 200, 20), starting_option="1.6e-17", manager=self._manager, 
             options_list=["8.0e-17", "6.4e-17", "4.8e-17", "3.2e-17", "1.6e-17"])
 
         # calculations
